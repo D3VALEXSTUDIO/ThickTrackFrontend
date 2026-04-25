@@ -1,21 +1,30 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// 🔐 ENV CONFIG (Vite-safe)
 const firebaseConfig = {
-  apiKey: "AIzaSyBcyGJXC0BcacAlOFeSzaXsWF0GWukQLcc",
-  authDomain: "thinktrack-5e29b.firebaseapp.com",
-  projectId: "thinktrack-5e29b",
-  storageBucket: "thinktrack-5e29b.firebasestorage.app",
-  messagingSenderId: "351628640479",
-  appId: "1:351628640479:web:6ed3b4788d06238880a96a",
-  measurementId: "G-3HRJLJGMPP"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
+// 🚀 INIT FIREBASE
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
+// 🔐 SERVICES
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+
+// 📊 ANALYTICS (only runs in browser)
+let analytics;
+if (typeof window !== "undefined") {
+  analytics = getAnalytics(app);
+}
+
+export { analytics };
